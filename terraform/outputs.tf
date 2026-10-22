@@ -6,9 +6,9 @@ output "ecr_discord_bot_url" {
   value = aws_ecr_repository.discord_bot.repository_url
 }
 
-output "lambda_function_url" {
-  value = aws_lambda_function_url.discord_bot.function_url
-}
+# output "lambda_function_url" {
+#   value = aws_lambda_function_url.discord_bot.function_url
+# }
 
 output "lambda_role_arn" {
   value = aws_iam_role.discord_bot_lambda.arn
