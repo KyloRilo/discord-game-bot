@@ -1,0 +1,27 @@
+FROM ubuntu:latest AS base
+
+RUN apt-get update && \
+    apt-get install -y curl wget tar lib32gcc-s1 lib32stdc++6 ca-certificates
+
+# Install SteamCMD
+RUN mkdir -p /steamcmd /valheim && \
+    cd /steamcmd && \
+    wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
+    tar -xvzf steamcmd_linux.tar.gz
+
+# Install Valheim server
+RUN /steamcmd/steamcmd.sh +login anonymous \
+    +force_install_dir /valheim \
+    +app_update 896660 validate \
+    +quit
+
+FROM base AS valserver
+# Add entrypoint script
+COPY start_valheim.sh /start_valheim.sh
+RUN chmod +x /start_valheim.sh
+
+WORKDIR /valheim
+
+EXPOSE 2456/udp 2457/udp 2458/udp
+
+CMD ["/start_valheim.sh"]

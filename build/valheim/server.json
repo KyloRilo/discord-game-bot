@@ -1,0 +1,15 @@
+{
+  "game": "valheim",
+  "enabled": true,
+  "task_definition": "game-bot-valheim",
+  "container_name": "valheim",
+  "ports": [
+    { "containerPort": 2456, "hostPort": 2456, "protocol": "udp" },
+    { "containerPort": 2457, "hostPort": 2457, "protocol": "udp" },
+    { "containerPort": 2458, "hostPort": 2458, "protocol": "udp" }
+  ],
+  "env_defaults": {
+    "SERVER_NAME": "Valhalla",
+    "WORLD_NAME": "Midgard"
+  }
+}

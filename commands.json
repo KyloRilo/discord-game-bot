@@ -1,0 +1,25 @@
+[
+  {
+    "name": "start",
+    "description": "Start a game server",
+    "type": 1,
+    "options": [
+      {
+        "name": "game",
+        "description": "Which game server to start",
+        "type": 3,
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "stop",
+    "description": "Stop the running game server",
+    "type": 1
+  },
+  {
+    "name": "status",
+    "description": "Check the current game server status",
+    "type": 1
+  }
+]

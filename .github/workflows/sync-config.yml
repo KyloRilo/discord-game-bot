@@ -1,0 +1,34 @@
+name: Sync Game Configs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'build/*/server.json'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  CONFIG_BUCKET: game-bot-game-config
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload server configs to S3
+        run: |
+          for config in build/*/server.json; do
+            game=$(basename "$(dirname "$config")")
+            echo "Uploading $config -> s3://$CONFIG_BUCKET/$game/server.json"
+            aws s3 cp "$config" "s3://$CONFIG_BUCKET/$game/server.json"
+          done
