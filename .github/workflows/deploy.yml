@@ -46,7 +46,7 @@ jobs:
         run: |
           terraform plan \
             -input=false \
-            -var="image_tag=${{ github.sha }}" \
+            -var="discord_bot_image_tag=${{ github.sha }}" \
             -out=tfplan
 
       - name: Terraform Apply
@@ -54,7 +54,7 @@ jobs:
         run: |
           terraform apply \
             -input=false \
-            -var="image_tag=${{ github.sha }}" \
+            -var="discord_bot_image_tag=${{ github.sha }}" \
             -auto-approve \
             tfplan
   
@@ -70,7 +70,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::115186574399:role/GithubActions-AssumeRole
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Update Discord secret
         env:

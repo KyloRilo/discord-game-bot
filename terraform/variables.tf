@@ -8,10 +8,10 @@ variable "project" {
   default = "game-bot"
 }
 
-variable "discord_bot_image_tag" {
-  type    = string
-  default = "latest"
-}
+# variable "discord_bot_image_tag" {
+#   type    = string
+#   default = "latest"
+# }
 
 variable "discord_bot_token" {
   type      = string

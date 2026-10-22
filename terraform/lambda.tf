@@ -84,23 +84,23 @@ resource "aws_iam_role_policy" "discord_bot" {
   })
 }
 
-resource "aws_lambda_function" "discord_bot" {
-  function_name = "${var.project}-discord-bot"
-  role          = aws_iam_role.discord_bot_lambda.arn
-  package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.discord_bot.repository_url}:${var.discord_bot_image_tag}"
-  timeout       = 30
-  memory_size   = 256
+# resource "aws_lambda_function" "discord_bot" {
+#   function_name = "${var.project}-discord-bot"
+#   role          = aws_iam_role.discord_bot_lambda.arn
+#   package_type  = "Image"
+#   image_uri     = "${aws_ecr_repository.discord_bot.repository_url}:${var.discord_bot_image_tag}"
+#   timeout       = 30
+#   memory_size   = 256
 
-  environment {
-    variables = {
-      PROJECT       = var.project
-      CONFIG_BUCKET = aws_s3_bucket.game_config.bucket
-    }
-  }
-}
+#   environment {
+#     variables = {
+#       PROJECT       = var.project
+#       CONFIG_BUCKET = aws_s3_bucket.game_config.bucket
+#     }
+#   }
+# }
 
-resource "aws_lambda_function_url" "discord_bot" {
-  function_name      = aws_lambda_function.discord_bot.function_name
-  authorization_type = "NONE"
-}
+# resource "aws_lambda_function_url" "discord_bot" {
+#   function_name      = aws_lambda_function.discord_bot.function_name
+#   authorization_type = "NONE"
+# }
