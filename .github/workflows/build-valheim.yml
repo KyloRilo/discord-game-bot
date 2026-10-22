@@ -3,8 +3,6 @@ name: Build Valheim Server
 on:
   push:
     branches: [main]
-    paths:
-      - 'build/valheim/**'
 
 permissions:
   id-token: write

@@ -3,13 +3,6 @@ name: Infra Deploy
 on:
   push:
     branches: [main]
-    paths:
-      - 'terraform/**'
-      - 'bot.py'
-      - 'Dockerfile'
-      - 'requirements.txt'
-      - 'commands.json'
-      - 'build/*/server.json'
 
 permissions:
   id-token: write

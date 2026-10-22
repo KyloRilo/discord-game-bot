@@ -3,8 +3,6 @@ name: Sync Game Configs
 on:
   push:
     branches: [main]
-    paths:
-      - 'build/*/server.json'
 
 permissions:
   id-token: write
