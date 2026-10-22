@@ -9,9 +9,34 @@ permissions:
   contents: read
 
 jobs:
+  build-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::115186574399:role/GithubActions-AssumeRole
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: ecr-login
+
+      - name: Build and push
+        env:
+          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          REPOSITORY: game-bot/discord-bot
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:latest
+  
   terraform:
     name: Terraform Deploy
     runs-on: ubuntu-latest
+    needs: build-bot
 
     steps:
       - name: Checkout
@@ -35,11 +60,6 @@ jobs:
       - name: Terraform Plan
         working-directory: terraform
         env:
-          TF_VAR_github_webhook_secret: ${{ secrets.GITHUB_WEBHOOK_SECRET }}
-          TF_VAR_github_app_id: ${{ secrets.GITHUB_APP_ID }}
-          TF_VAR_github_installation_id: ${{ secrets.GITHUB_INSTALLATION_ID }}
-          TF_VAR_github_private_key: ${{ secrets.GITHUB_PRIVATE_KEY }}
-          TF_VAR_openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           TF_VAR_discord_bot_token: ${{ secrets.DISCORD_BOT_TOKEN }}
           TF_VAR_discord_application_id: ${{ secrets.DISCORD_APPLICATION_ID }}
           TF_VAR_discord_public_key: ${{ secrets.DISCORD_PUBLIC_KEY }}
