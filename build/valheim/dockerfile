@@ -9,10 +9,9 @@ RUN mkdir -p /steamcmd /valheim && \
     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
     tar -xvzf steamcmd_linux.tar.gz
 
-# Install Valheim server
 RUN /steamcmd/steamcmd.sh +login anonymous \
     +force_install_dir /valheim \
-    +app_update 896660 validate \
+    +app_update 892970 validate \
     +quit
 
 FROM base AS valserver

@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import os
@@ -59,12 +60,15 @@ def list_enabled_games():
 
 def verify_signature(event):
     body = event.get("body", "")
+    if event.get("isBase64Encoded"):
+        body = base64.b64decode(body).decode("utf-8")
     headers = {k.lower(): v for k, v in event.get("headers", {}).items()}
     signature = headers.get("x-signature-ed25519", "")
     timestamp = headers.get("x-signature-timestamp", "")
 
     verify_key = VerifyKey(bytes.fromhex(DISCORD_PUBLIC_KEY))
     verify_key.verify(f"{timestamp}{body}".encode(), bytes.fromhex(signature))
+    return body
 
 
 def discord_response(content, ephemeral=False):
@@ -80,11 +84,11 @@ def discord_response(content, ephemeral=False):
 
 def handler(event, context):
     try:
-        verify_signature(event)
+        raw_body = verify_signature(event)
     except (BadSignatureError, Exception):
         return {"statusCode": 401, "body": "Invalid request signature"}
 
-    body = json.loads(event.get("body", "{}"))
+    body = json.loads(raw_body)
 
     if body.get("type") == 1:
         return {

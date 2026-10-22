@@ -94,8 +94,9 @@ resource "aws_lambda_function" "discord_bot" {
 
   environment {
     variables = {
-      PROJECT       = var.project
-      CONFIG_BUCKET = aws_s3_bucket.game_config.bucket
+      PROJECT            = var.project
+      CONFIG_BUCKET      = aws_s3_bucket.game_config.bucket
+      DISCORD_PUBLIC_KEY = var.discord_public_key
     }
   }
 }
