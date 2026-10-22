@@ -22,7 +22,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::115186574399:role/GithubActions-AssumeRole
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
