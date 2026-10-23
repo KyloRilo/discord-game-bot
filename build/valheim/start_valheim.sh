@@ -9,7 +9,7 @@ PORT=${PORT:-2456}
 
 export templdpath=$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=./linux64:$LD_LIBRARY_PATH
-export SteamAppId=892970
+export SteamAppId=896660
 
 echo "Starting Valheim server: $SERVER_NAME"
 ./valheim_server.x86_64 -nographics -batchmode \

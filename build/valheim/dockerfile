@@ -11,7 +11,7 @@ RUN mkdir -p /steamcmd /valheim && \
 
 RUN /steamcmd/steamcmd.sh +login anonymous \
     +force_install_dir /valheim \
-    +app_update 892970 validate \
+    +app_update 896660 validate \
     +quit
 
 FROM base AS valserver
