@@ -61,8 +61,8 @@ jobs:
         working-directory: terraform
         env:
           TF_VAR_discord_bot_token: ${{ secrets.DISCORD_BOT_TOKEN }}
-          TF_VAR_discord_application_id: ${{ secrets.DISCORD_APPLICATION_ID }}
-          TF_VAR_discord_public_key: ${{ secrets.DISCORD_PUBLIC_KEY }}
+          TF_VAR_discord_application_id: ${{ vars.DISCORD_APPLICATION_ID }}
+          TF_VAR_discord_public_key: ${{ vars.DISCORD_PUBLIC_KEY }}
         run: |
           terraform plan \
             -input=false \
@@ -95,8 +95,8 @@ jobs:
       - name: Update Discord secret
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
-          DISCORD_PUBLIC_KEY: ${{ secrets.DISCORD_PUBLIC_KEY }}
+          DISCORD_APPLICATION_ID: ${{ vars.DISCORD_APPLICATION_ID }}
+          DISCORD_PUBLIC_KEY: ${{ vars.DISCORD_PUBLIC_KEY }}
         run: |
           aws secretsmanager put-secret-value \
             --secret-id "game-bot/discord" \
@@ -128,5 +128,5 @@ jobs:
       - name: Register commands
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
+          DISCORD_APPLICATION_ID: ${{ vars.DISCORD_APPLICATION_ID }}
         run: python register_commands.py
